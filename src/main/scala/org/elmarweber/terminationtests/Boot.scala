@@ -12,11 +12,11 @@ object Boot extends App {
 
   val sleepSysHook = sys.env.getOrElse("SKATT_SLEEP_SYS_HOOK", "0").toLong
 
-  system.registerOnTermination(() => {
+  system.registerOnTermination({
     println("Shutdown from actor system")
   })
 
-  sys.addShutdownHook(() => {
+  sys.addShutdownHook({
     println("Shutdown from sys hook")
     println(s"Sleeping for ${sleepSysHook}ms as per config")
     Thread.sleep(sleepSysHook)
