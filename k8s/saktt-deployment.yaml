@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: saktt-deployment
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      name: saktt
+      labels:
+        app: saktt
+    spec:
+      containers:
+      - name: saktt
+        image: elmarweber/scala-akka-k8s-termination-tests:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9090
+        args: [
+          "-Djava.security.egd=file:/dev/./urandom",
+          "-Xmx1g",
+        ]
