@@ -17,7 +17,10 @@ spec:
     spec:
       containers:
       - name: saktt
-        image: elmarweber/scala-akka-k8s-termination-tests:latest
+        env:
+        - name: SKATT_SLEEP_SYS_HOOK
+          value: "15000"
+        image: elmarweber/scala-akka-k8s-termination-tests:1.0.0-6196d69
         imagePullPolicy: Always
         ports:
         - containerPort: 9090
