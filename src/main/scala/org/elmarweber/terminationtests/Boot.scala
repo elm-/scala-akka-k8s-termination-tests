@@ -10,6 +10,7 @@ object Boot extends App {
   implicit val system = ActorSystem("test")
   implicit val mat = ActorMaterializer()
 
+  val sleepSysHook = sys.env.getOrElse("SKATT_SLEEP_SYS_HOOK", "0").toLong
 
   system.registerOnTermination(() => {
     println("Shutdown from actor system")
@@ -17,6 +18,8 @@ object Boot extends App {
 
   sys.addShutdownHook(() => {
     println("Shutdown from sys hook")
+    println(s"Sleeping for ${sleepSysHook}ms as per config")
+    Thread.sleep(sleepSysHook)
     println("Triggering shutdown of actor system with 10s timeout")
     try {
       Await.result(system.terminate(), 10.seconds)
